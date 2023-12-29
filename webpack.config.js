@@ -16,7 +16,7 @@ const postCSSPlugins = [
 class RunAfterCompile{ 
     apply(compiler){ 
         compiler.hooks.done.tap('Copy images', function() { 
-            fse.copySync('./app/assets/images', './dist/assets/images')
+            fse.copySync('./app/assets/images', './docs/assets/images')
         })
     }
 }
@@ -67,11 +67,22 @@ if (currentTask == 'dev') {
 }
 
 if (currentTask == "build") {
+    config.module.rules.push({
+        test: /\.js$/, 
+        exclude: /(node_modules)/, 
+        use: { 
+            loader: 'babel-loader', 
+            options: { 
+                presets: ['@babel/preset-env']
+            }
+
+        }
+    })
     cssConfig.use.unshift(MiniCssExtractPlugin.loader)
     config.output = {
         filename: '[name].[chunkhash].js',
         chunkFilename: '[name].[chunkhash].js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'docs'),
         clean: true,
     },
         config.mode = "production",
