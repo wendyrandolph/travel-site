@@ -1,3 +1,8 @@
+<?php
+/* Template Name: travel
+ */
+/* other PHP code here */
+?> 
 <!DOCTYPE html>
 <html>
 <!--192.168.150.1:3000-->
