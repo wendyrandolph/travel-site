@@ -92,11 +92,6 @@ if (currentTask == "build") {
         }
     config.plugins.push(
         new MiniCssExtractPlugin({ filename: `styles.[hash].css` }),
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'src/index.php'),
-            chunks: ['index'],
-            filename: 'index.php',
-        }),
         new RunAfterCompile()
     )
 };
