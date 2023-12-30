@@ -13,9 +13,9 @@ const postCSSPlugins = [
     require('postcss-hexrgba'),
     require('autoprefixer')
 ]
-class RunAfterCompile{ 
-    apply(compiler){ 
-        compiler.hooks.done.tap('Copy images', function() { 
+class RunAfterCompile {
+    apply(compiler) {
+        compiler.hooks.done.tap('Copy images', function () {
             fse.copySync('./app/assets/images', './docs/assets/images')
         })
     }
@@ -28,18 +28,18 @@ let cssConfig = {
     ]
 
 }
-let pages = fse.readdirSync('./app').filter(function (file){ 
+let pages = fse.readdirSync('./app').filter(function (file) {
     return file.endsWith('.html')
-}).map(function(page){ 
+}).map(function (page) {
     return new HtmlWebpackPlugin({
-        filename: page, 
+        filename: page,
         template: `./app/${page}`
     })
 })
 
 let config = {
-    entry: "./app/assets/scripts/App.js",
-    plugins: pages, 
+    entry:  "./app/assets/scripts/App.js",
+    plugins: pages,
     module: {
         rules: [
             cssConfig
@@ -60,7 +60,7 @@ if (currentTask == 'dev') {
             watch: false
         },
         hot: false,
-        open: true, 
+        open: true,
         port: 3000,
     },
         config.mode = 'development'
@@ -68,11 +68,11 @@ if (currentTask == 'dev') {
 
 if (currentTask == "build") {
     config.module.rules.push({
-        test: /\.js$/, 
-        exclude: /(node_modules)/, 
-        use: { 
-            loader: 'babel-loader', 
-            options: { 
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+            loader: 'babel-loader',
+            options: {
                 presets: ['@babel/preset-env']
             }
 
@@ -92,6 +92,11 @@ if (currentTask == "build") {
         }
     config.plugins.push(
         new MiniCssExtractPlugin({ filename: `styles.[hash].css` }),
+        new HtmlWebpackPlugin({
+            template: path.join(__dirname, 'src/index.php'),
+            chunks: ['index'],
+            filename: 'index.php',
+        }),
         new RunAfterCompile()
     )
 };
